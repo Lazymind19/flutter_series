@@ -47,6 +47,22 @@ class _CustomContainerBoxState extends State<CustomContainerBox>
     tween.addListener(() {
       setState(() {
         boxColor = Color.lerp(firstColor, widget.color, tween.value)!;
+        if (tween.value < 0.5) {
+          final timePerAlphabet = 500 / widget.textName.length;
+          final deletedLetter = tween.value / timePerAlphabet;
+          setState(() {
+            boxName = boxName.substring(
+                0, boxName.length - deletedLetter.toInt() - 1);
+          });
+        } else {
+          final timePerAlphabet = 500 / widget.textName.length;
+          final showLetter = ((tween.value - 0.5) * 1000) / timePerAlphabet;
+
+          setState(() {
+            boxName = widget.textName.substring(
+                0, showLetter.toInt().clamp(0, widget.textName.length));
+          });
+        }
       });
     });
     animationController.reset();
@@ -60,7 +76,7 @@ class _CustomContainerBoxState extends State<CustomContainerBox>
       width: 300,
       color: boxColor,
       child: Center(
-        child: Text(widget.textName),
+        child: Text(boxName),
       ),
     );
   }
