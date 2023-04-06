@@ -22,6 +22,12 @@ class _CustomContainerBoxState extends State<CustomContainerBox>
   late String boxName;
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     animationController =
